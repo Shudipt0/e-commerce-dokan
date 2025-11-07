@@ -47,3 +47,25 @@ export async function fetchUsers() {
   // console.log(data);
   return data.users;
 }
+
+// get all products
+export async function fetchProducts() {
+  const res = await fetch(
+    `https://api-dokan-backend.onrender.com/api/v1/products`
+  );
+
+  const data = await res.json();
+  // console.log(data);
+  return data.data;
+}
+
+// get single product by id
+export async function getSingleProduct(id: string) {
+  const res = await fetch(
+    `https://api-dokan-backend.onrender.com/api/v1/products/${id}`
+  );
+
+  const data = await res.json();
+  // console.log(data);
+  return data;
+}

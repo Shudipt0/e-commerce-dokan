@@ -137,7 +137,7 @@ const AppSidebar = () => {
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
-                      <Link href="/products">
+                      <Link href="/dashboard/products">
                         <Projector /> See All Products
                       </Link>
                     </SidebarMenuButton>
