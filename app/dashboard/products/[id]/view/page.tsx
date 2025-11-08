@@ -40,7 +40,7 @@ const viewPage = async (props: Props) => {
 
       <div className="w-full flex flex-col md:flex-row gap-3 mt-8">
         {/* left side */}
-        <div className="w-1/2 flex flex-wrap gap-2 lg:gap-5">
+        <div className="w-1/2 flex flex-wrap gap-2 lg:gap-5 capitalize">
           {productData.map((data, index) => (
             <div
               key={index}
@@ -59,13 +59,13 @@ const viewPage = async (props: Props) => {
                 ))}
               </ul>
             ) : (
-              <p>null</p>
+              <p className="text-white">no tags</p>
             )}
           </div>
         </div>
         {/* right side */}
         <div className="w-1/2 flex flex-col gap-2 lg:gap-4">
-          <div className=" w-fit px-4 py-2 border border-muted-foreground rounded flex items-center gap-4">
+          <div className=" w-fit px-4 py-2 border border-muted-foreground rounded flex items-center gap-4 capitalize">
             <h1>description:</h1>
             <p>{product.description}</p>
           </div>
@@ -84,7 +84,7 @@ const viewPage = async (props: Props) => {
             )}
           </div>
 
-          <div className=" w-full px-4 py-2 border border-muted-foreground rounded flex gap-2">
+          <div className=" w-full px-4 py-2 border border-muted-foreground rounded flex gap-2 capitalize">
             <h1>Images:</h1>
             {product?.images && product.images.length > 0 ? (
               <div>
@@ -111,9 +111,11 @@ const viewPage = async (props: Props) => {
         </div>
       </div>
       {/* update button */}
-      <div>
+      <div className="mt-3 lg:mt-5">
         <Link href={`/dashboard/products/${product._id}/update`}>
-          <button>update</button>
+          <button className="border text-muted-foreground px-4 py-2 rounded bg-blue-500 hover:bg-blue-700 capitalize">
+            update
+          </button>
         </Link>
       </div>
     </div>

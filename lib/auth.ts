@@ -32,9 +32,6 @@ export async function fetchUsers() {
 
   const res = await fetch(
     `https://api-dokan-backend.onrender.com/api/v1/users`,
-    // {
-    //   credentials: "include",
-    // }
     {
       headers: {
         "Content-Type": "application/json",

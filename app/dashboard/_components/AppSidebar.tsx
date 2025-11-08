@@ -144,7 +144,7 @@ const AppSidebar = () => {
                   </SidebarMenuItem>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild>
-                      <Link href="/# ">
+                      <Link href="/dashboard/products/add-product">
                         <Plus /> Add Products
                       </Link>
                     </SidebarMenuButton>
