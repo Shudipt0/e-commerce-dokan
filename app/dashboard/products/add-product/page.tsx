@@ -1,12 +1,23 @@
 "use client";
 import { addProduct } from "@/app/actions/product/product";
+import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
 const addProductPage = () => {
   const [state, action, ispending] = useActionState(addProduct, null);
+  const [availableStatus, setAvailableStatus] = useState("in stock");
+  const [productAge, setProductAge] = useState("new");
   return (
     <div className="md:p-4 ">
       <h1 className="md:text-xl font-semibold text-muted-foreground capitalize">
@@ -25,8 +36,13 @@ const addProductPage = () => {
                     name="title"
                     id="title"
                     autoComplete="off"
-                    placeholder="Evil Rabbit"
+                    placeholder="Title"
                   />
+                  {state?.errors?.title && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {state?.errors?.title?.[0]}
+                    </p>
+                  )}
                 </Field>
                 <Field className="col-span-3 md:col-span-1">
                   <FieldLabel htmlFor="category" className="text-[16px]">
@@ -38,6 +54,11 @@ const addProductPage = () => {
                     autoComplete="off"
                     placeholder="Category"
                   />
+                  {state?.errors?.category && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {state?.errors?.category?.[0]}
+                    </p>
+                  )}
                 </Field>
                 <Field className="col-span-3">
                   <FieldLabel htmlFor="description" className="text-[16px]">
@@ -49,6 +70,11 @@ const addProductPage = () => {
                     placeholder="Description"
                     rows={4}
                   />
+                  {state?.errors?.description && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {state?.errors?.description?.[0]}
+                    </p>
+                  )}
                 </Field>
                 <Field className="col-span-3 md:col-span-1">
                   <FieldLabel htmlFor="price" className="text-[16px]">
@@ -60,6 +86,11 @@ const addProductPage = () => {
                     autoComplete="off"
                     placeholder="Price"
                   />
+                  {state?.errors?.price && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {state?.errors?.price?.[0]}
+                    </p>
+                  )}
                 </Field>
                 <Field className="col-span-3 md:col-span-1">
                   <FieldLabel htmlFor="stock" className="text-[16px]">
@@ -145,23 +176,46 @@ const addProductPage = () => {
                   <FieldLabel htmlFor="availableStatus" className="text-[16px]">
                     Available Status
                   </FieldLabel>
-                  <Input
+                  <Select
+                    onValueChange={setAvailableStatus}
+                    value={availableStatus}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select stock" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="in stock">In stock</SelectItem>
+                        <SelectItem value="low stock">Low stock</SelectItem>
+                        <SelectItem value="out of stock">
+                          Out of stock
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <input
+                    type="hidden"
                     name="availableStatus"
-                    id="availableStatus"
-                    autoComplete="off"
-                    placeholder="Available Status"
+                    value={availableStatus}
                   />
                 </Field>
                 <Field className="col-span-3 md:col-span-1">
                   <FieldLabel htmlFor="productAge" className="text-[16px]">
                     Product Age
                   </FieldLabel>
-                  <Input
-                    name="productAge"
-                    id="productAge"
-                    autoComplete="off"
-                    placeholder="Product Age"
-                  />
+                  <Select onValueChange={setProductAge} value={productAge}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select age" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="new">New</SelectItem>
+                        <SelectItem value="old">Old</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {/* Hidden input for form submission */}
+                  <input type="hidden" name="productAge" value={productAge} />
                 </Field>
                 <Field className="col-span-3 md:col-span-1">
                   <FieldLabel htmlFor="returnPolicy" className="text-[16px]">
@@ -193,17 +247,31 @@ const addProductPage = () => {
                     Thumbnail
                   </FieldLabel>
                   <Input name="thumbnail" id="thumbnail" type="file" />
+                  {state?.errors?.thumbnail && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {state?.errors?.thumbnail?.[0]}
+                    </p>
+                  )}
                 </Field>
                 <Field className="col-span-3 md:col-span-1">
                   <FieldLabel htmlFor="images" className="text-[16px]">
                     Images
                   </FieldLabel>
                   <Input name="images" id="images" type="file" multiple />
+                  {state?.errors?.images && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {state?.errors?.images?.[0]}
+                    </p>
+                  )}
                 </Field>
               </div>
             </FieldGroup>
           </FieldSet>
-          <button type="submit">Add</button>
+          <div className="pt-3 md:pt-5">
+            <Button type="submit" disabled={ispending} variant="outline">
+              Create
+            </Button>
+          </div>
         </form>
       </div>
     </div>

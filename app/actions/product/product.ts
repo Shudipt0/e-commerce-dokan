@@ -1,63 +1,137 @@
 "use server";
 
-export const addProduct = async (prevState: any, formData: FormData) => {
-  const title = formData.get("title")?.toString().trim();
-  const category = formData.get("category")?.toString().trim();
-  const description = formData.get("description")?.toString().trim();
-  const price = Number(formData.get("price"));
-  const stock = Number(formData.get("stock"));
-  const tagsStr = formData.get("tags")?.toString() || "";
-  const tags = tagsStr
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter(Boolean);
-  const weight = formData.get("weight");
-  const warrantyInformation = formData
-    .get("warrantyInformation")
-    ?.toString()
-    .trim();
-  const shippingInformation = formData
-    .get("shippingInformation")
-    ?.toString()
-    .trim();
-  const availableStatus = formData.get("availableStatus")?.toString().trim();
-  const productAge = formData.get("productAge")?.toString().trim();
-  const returnPolicy = formData.get("returnPolicy")?.toString().trim();
-  const minimumOrderQuantity = Number(formData.get("minimumOrderQuantity"));
-  const thumbnail = formData.get("thumbnail");
-  const images = formData.getAll("images");
+import z from "zod";
 
-  const bodyData = {
-    title,
-    category,
-    description,
-    price,
-    stock,
-    tags,
-    weight,
-    warrantyInformation,
-    shippingInformation,
-    availableStatus,
-    productAge,
-    returnPolicy,
-    minimumOrderQuantity,
-    thumbnail,
-    images,
+// Validate a single file (e.g. thumbnail)
+const fileSchema = z
+  .instanceof(File)
+  .refine((file) => file.size > 0, "File cannot be empty")
+  .refine(
+    (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+    "Only .jpg, .png, or .webp files are allowed"
+  );
+
+// Validate multiple images
+const imagesSchema = z
+  .array(fileSchema)
+  .nonempty("At least one image is required")
+  .optional(); // make optional if not always required
+
+const formSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  category: z.string().min(1, "Category is required"),
+  description: z.string().min(1, "Description is required"),
+  price: z.number(),
+  stock: z.number().nullable().optional(),
+  tags: z.array(z.string().nullable()).nullable().optional(),
+  weight: z.string().nullable().optional(),
+  warrantyInformation: z.string().nullable().optional(),
+  shippingInformation: z.string().nullable().optional(),
+  availableStatus: z
+    .enum(["in stock", "low stock", "out of stock"])
+    .default("in stock")
+    .optional(),
+  productAge: z.enum(["new", "old"]).default("new").optional(),
+  returnPolicy: z.string().nullable().optional(),
+  minimumOrderQuantity: z.number().nullable().optional(),
+  thumbnail: fileSchema.optional(),
+  images: imagesSchema.optional(),
+});
+
+export const addProduct = async (prevState: any, formData: FormData) => {
+  const parseNumber = (value: FormDataEntryValue | null) => {
+    if (!value) return undefined;
+    const num = Number(value);
+    return isNaN(num) ? undefined : num;
   };
+  //  validation
+  const parsed = formSchema.safeParse({
+    title: formData.get("title") as string,
+    category: formData.get("category") as string,
+    description: formData.get("description") as string,
+    price: parseNumber(formData.get("price")),
+    stock: parseNumber(formData.get("stock")),
+    tags: formData.getAll("tags") as string[],
+    weight: formData.get("weight") as string,
+    warrantyInformation: formData.get("warrantyInformation") as string,
+    shippingInformation: formData.get("shippingInformation") as string,
+    availableStatus: formData.get("availableStatus") as string,
+    productAge: formData.get("productAge") as string,
+    returnPolicy: formData.get("returnPolicy") as string,
+    minimumOrderQuantity: parseNumber(formData.get("minimumOrderQuantity")),
+    thumbnail: formData.get("thumbnail") as File,
+    images: formData.getAll("images") as File[],
+  });
+
+  if (!parsed.success) {
+    console.error("Validation errors:", parsed.error.flatten().fieldErrors);
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const validatedFields = parsed.data;
+  const payload = new FormData();
+
+  // Append validated fields (see previous snippet for full appending)
+  payload.append("title", validatedFields.title);
+  payload.append("category", validatedFields.category);
+  payload.append("description", validatedFields.description);
+  // convert numeric values to string before appending
+  payload.append("price", String(validatedFields.price));
+  if (validatedFields.stock != null) {
+    payload.append("stock", String(validatedFields.stock));
+  }
+  if (validatedFields.tags && validatedFields.tags.length) {
+    validatedFields.tags.forEach((tag) => {
+      if (tag != null) payload.append("tags", tag);
+    });
+  }
+  if (validatedFields.weight) {
+    payload.append("weight", validatedFields.weight);
+  }
+  if (validatedFields.warrantyInformation) {
+    payload.append("warrantyInformation", validatedFields.warrantyInformation);
+  }
+  if (validatedFields.shippingInformation) {
+    payload.append("shippingInformation", validatedFields.shippingInformation);
+  }
+  payload.append(
+    "availableStatus",
+    validatedFields.availableStatus ?? "in stock"
+  );
+  payload.append("productAge", validatedFields.productAge ?? "new");
+  if (validatedFields.returnPolicy) {
+    payload.append("returnPolicy", validatedFields.returnPolicy);
+  }
+  if (validatedFields.minimumOrderQuantity != null) {
+    payload.append(
+      "minimumOrderQuantity",
+      String(validatedFields.minimumOrderQuantity)
+    );
+  }
+  if (validatedFields.thumbnail) {
+    payload.append("thumbnail", validatedFields.thumbnail);
+  }
+  if (validatedFields.images && validatedFields.images.length) {
+    validatedFields.images.forEach((img) => payload.append("images", img));
+  }
 
   try {
     const res = await fetch(
       `https://api-dokan-backend.onrender.com/api/v1/products`,
       {
         method: "POST",
-        body: formData,
+        body: payload,
         // headers: { "Content-Type": "application/json" },
         credentials: "include",
       }
     );
 
     const product = await res.json();
-    console.log(product);
+    if (!res.ok) {
+      console.error("API Error:", product);
+      return { error: product.message || "Failed to add product" };
+    }
+    // console.log(product);
   } catch (error) {
     console.error("Error in product adding:", error);
     return { error: "add product failed" };
