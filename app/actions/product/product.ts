@@ -137,3 +137,103 @@ export const addProduct = async (prevState: any, formData: FormData) => {
     return { error: "add product failed" };
   }
 };
+
+export const updateProduct = async (prevState: any, formData: FormData) => {
+  const parseNumber = (value: FormDataEntryValue | null) => {
+    if (!value) return undefined;
+    const num = Number(value);
+    return isNaN(num) ? undefined : num;
+  };
+  //  validation
+  const parsed = formSchema.safeParse({
+    title: formData.get("title") as string,
+    category: formData.get("category") as string,
+    description: formData.get("description") as string,
+    price: parseNumber(formData.get("price")),
+    stock: parseNumber(formData.get("stock")),
+    tags: formData.getAll("tags") as string[],
+    weight: formData.get("weight") as string,
+    warrantyInformation: formData.get("warrantyInformation") as string,
+    shippingInformation: formData.get("shippingInformation") as string,
+    availableStatus: formData.get("availableStatus") as string,
+    productAge: formData.get("productAge") as string,
+    returnPolicy: formData.get("returnPolicy") as string,
+    minimumOrderQuantity: parseNumber(formData.get("minimumOrderQuantity")),
+    thumbnail: formData.get("thumbnail") as File,
+    images: formData.getAll("images") as File[],
+  });
+
+  if (!parsed.success) {
+    console.error("Validation errors:", parsed.error.flatten().fieldErrors);
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const validatedFields = parsed.data;
+  const payload = new FormData();
+
+  // Append validated fields (see previous snippet for full appending)
+  payload.append("title", validatedFields.title);
+  payload.append("category", validatedFields.category);
+  payload.append("description", validatedFields.description);
+  // convert numeric values to string before appending
+  payload.append("price", String(validatedFields.price));
+  if (validatedFields.stock != null) {
+    payload.append("stock", String(validatedFields.stock));
+  }
+  if (validatedFields.tags && validatedFields.tags.length) {
+    validatedFields.tags.forEach((tag) => {
+      if (tag != null) payload.append("tags", tag);
+    });
+  }
+  if (validatedFields.weight) {
+    payload.append("weight", validatedFields.weight);
+  }
+  if (validatedFields.warrantyInformation) {
+    payload.append("warrantyInformation", validatedFields.warrantyInformation);
+  }
+  if (validatedFields.shippingInformation) {
+    payload.append("shippingInformation", validatedFields.shippingInformation);
+  }
+  payload.append(
+    "availableStatus",
+    validatedFields.availableStatus ?? "in stock"
+  );
+  payload.append("productAge", validatedFields.productAge ?? "new");
+  if (validatedFields.returnPolicy) {
+    payload.append("returnPolicy", validatedFields.returnPolicy);
+  }
+  if (validatedFields.minimumOrderQuantity != null) {
+    payload.append(
+      "minimumOrderQuantity",
+      String(validatedFields.minimumOrderQuantity)
+    );
+  }
+  if (validatedFields.thumbnail) {
+    payload.append("thumbnail", validatedFields.thumbnail);
+  }
+  if (validatedFields.images && validatedFields.images.length) {
+    validatedFields.images.forEach((img) => payload.append("images", img));
+  }
+
+  try {
+    const res = await fetch(
+      `https://api-dokan-backend.onrender.com/api/v1/products`,
+      {
+        method: "POST",
+        body: payload,
+        // headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      }
+    );
+
+    const product = await res.json();
+    if (!res.ok) {
+      console.error("API Error:", product);
+      return { error: product.message || "Failed to add product" };
+    }
+    // console.log(product);
+  } catch (error) {
+    console.error("Error in product adding:", error);
+    return { error: "add product failed" };
+  }
+};

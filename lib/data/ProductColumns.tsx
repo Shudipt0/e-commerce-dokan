@@ -109,7 +109,15 @@ export const columns: ColumnDef<Products>[] = [
             >
               View Product
             </DropdownMenuItem>
-            <DropdownMenuItem>Update Product</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                (window.location.href = `/dashboard/products/${row.getValue(
+                  "_id"
+                )}/update`)
+              }
+            >
+              Update Product
+            </DropdownMenuItem>
             <DropdownMenuItem className="text-red-500 font-semibold">
               Delete Product
             </DropdownMenuItem>
