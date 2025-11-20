@@ -1,13 +1,14 @@
 import { cookies } from "next/headers";
 
-// get all order by admin
-export async function fetchAllOrders() {
+// get all contact
+export async function fetchAllContact() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-
   const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/orders`,
+    `https://api-dokan-backend.onrender.com/api/v1/contact`,
     {
+      method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -17,17 +18,18 @@ export async function fetchAllOrders() {
 
   const data = await res.json();
   //   console.log(data);
-  return data.orders;
+  return data.contacts;
 }
 
-// get single order by admin
-export async function fetchSingleOrder(id: string) {
+// get single contact
+export async function fetchSingleContact(id: string) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-
   const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/orders/${id}`,
+    `https://api-dokan-backend.onrender.com/api/v1/contact/${id}`,
     {
+      method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -36,6 +38,6 @@ export async function fetchSingleOrder(id: string) {
   );
 
   const data = await res.json();
-  // console.log(data);
-  return data.order;
+  //   console.log(data);
+  return data.contact;
 }

@@ -141,14 +141,14 @@ export const columns: ColumnDef<Orders>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              //   onClick={() =>
-              //     (window.location.href = `/dashboard/products/${row.getValue(
-              //       "_id"
-              //     )}/view`)
-              //   }
+              onClick={() =>
+                (window.location.href = `/dashboard/orders/${row.getValue(
+                  "_id"
+                )}`)
+              }
               className="text-green-500"
             >
-              View Product
+              Order Details
             </DropdownMenuItem>
             <DropdownMenuItem>
               <form action={action}>

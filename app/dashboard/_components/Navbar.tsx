@@ -12,17 +12,18 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { CgProfile } from "react-icons/cg";
 import { IoIosLogOut } from "react-icons/io";
-import { IoSettingsOutline } from "react-icons/io5";
 
 interface NavbarProps {
   userData: User | null;
 }
 
 interface User {
-  id: string;
+  _id: string;
   name: string;
+  phone: string;
   email: string;
   role: string;
 }
@@ -35,7 +36,7 @@ const Navbar = ({ userData }: NavbarProps) => {
       <SidebarTrigger />
       {/* right */}
       <div className="flex items-center gap-4">
-        <h1>{userData?.name}</h1>
+        <h1 className="uppercase font-semibold text-xl">Dashboard</h1>
 
         {/* theme section */}
         <DropdownMenu>
@@ -71,13 +72,50 @@ const Navbar = ({ userData }: NavbarProps) => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <CgProfile />
-              Profile
+              {/* profile dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger className="w-full flex items-center gap-2">
+                  <CgProfile />
+                  Profile
+                </DropdownMenuTrigger>
+                <DropdownMenuContent sideOffset={12} className="w-80 h-60">
+                  <DropdownMenuLabel>Profile Information</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <div className="space-y-2 capitalize ">
+                      <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2">
+                        Name:{" "}
+                        <span className="text-lg font-semibold text-foreground">
+                          {userData?.name || "Guest"}
+                        </span>
+                      </p>
+                      <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2">
+                        Phone:{" "}
+                        <span className="text-lg font-semibold text-foreground">
+                          {userData?.phone || "---"}
+                        </span>
+                      </p>
+                      <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2 lowercase">
+                        Email:{" "}
+                        <span className="text-lg font-semibold text-foreground">
+                          {userData?.email || "---"}
+                        </span>
+                      </p>
+                      <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2">
+                        Role:{" "}
+                        <span className="text-lg font-semibold text-foreground">
+                          {userData?.role || "User"}
+                        </span>
+                      </p>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href={`/dashboard/users/settings`}>Settings</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <IoSettingsOutline />
-              Settings
-            </DropdownMenuItem>
+
             <DropdownMenuItem variant={"destructive"}>
               <IoIosLogOut />
               Log Out

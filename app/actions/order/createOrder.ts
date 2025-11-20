@@ -44,14 +44,8 @@ export const createOrder = async (prevState: any, formData: FormData) => {
 export const changeOrderStatus = async (prevState: any, formData: FormData) => {
   const id = formData.get("_id") as string;
   const status = formData.get("status") as string;
-  // const admin = await fetchUserProfile();
-  // const adminId = admin._id;
   const cookieStore = await cookies();
   const adminToken = cookieStore.get("token")?.value;
-  // const adminId = cookieStore.get("userId")?.value;
-
-  // console.log(role, id);
-  // console.log(adminToken);
 
   const res = await fetch(
     `https://api-dokan-backend.onrender.com/api/v1/orders/${id}`,
