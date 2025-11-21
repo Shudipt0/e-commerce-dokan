@@ -14,23 +14,23 @@ interface UserProfile {
   };
 }
 
-const UpdateProfile = ({ userData }: UserProfile) => {
+const UpdateUserProfile = ({ userData }: UserProfile) => {
   const [state, action, ispending] = useActionState(changeProfile, null);
   return (
-    <div className="">
-      <h1 className="text-xl font-semibold text-muted-foreground">
+    <div className="container mx-auto px-3 md:px-14">
+      <h1 className="text-md md:text-xl font-semibold text-muted-foreground">
         Profile Settings{" "}
       </h1>
-      <div className="w-full h-[500px] flex items-center justify-center">
+      <div className="w-full h-fit md:h-[500px] py-10 md:py-0 flex items-center justify-center">
         <form
           action={action}
-          className="w-[300px] p-6 shadow-2xl bg-zinc-900 rounded-md"
+          className="w-full md:w-[300px] p-6 shadow-2xl rounded-md"
         >
           <FieldSet>
             <FieldGroup>
               <input type="hidden" name="_id" value={userData._id} />
 
-              <Field className="text-[14px] font-extralight text-muted-foreground">
+              <Field className="text-[12px] md:text-[14px] font-semibold text-muted-foreground">
                 <FieldLabel htmlFor="name">Name :</FieldLabel>
                 <Input
                   name="name"
@@ -41,7 +41,7 @@ const UpdateProfile = ({ userData }: UserProfile) => {
                 />
               </Field>
 
-              <Field className="text-[14px] font-extralight text-muted-foreground">
+              <Field className="text-[12px] md:text-[14px] font-semibold text-muted-foreground">
                 <FieldLabel htmlFor="phone">Phone :</FieldLabel>
                 <Input
                   name="phone"
@@ -51,7 +51,7 @@ const UpdateProfile = ({ userData }: UserProfile) => {
                 />
               </Field>
 
-              <Field className="text-[14px] font-extralight text-muted-foreground">
+              <Field className="text-[12px] md:text-[14px] font-semibold text-muted-foreground">
                 <FieldLabel htmlFor="email">Email :</FieldLabel>
                 <Input
                   name="email"
@@ -74,4 +74,4 @@ const UpdateProfile = ({ userData }: UserProfile) => {
   );
 };
 
-export default UpdateProfile;
+export default UpdateUserProfile;

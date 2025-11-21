@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import DesktopNavbar from "./DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
@@ -11,14 +11,23 @@ const NavItem = [
   { link: "/about", label: "About" },
 ];
 
-const Navbar = async () => {
+interface UserData {
+  _id: string;
+  name: string;
+  phone: string;
+  email: string;
+  role: string;
+}
+
+const Navbar = ({ userData }: { userData: UserData | null }) => {
+  // console.log(userProfile);
   return (
     <div className="w-full md:h-28 border border-gray-300">
       {/* upper nav */}
       <TopNavbar />
       {/* main navbar */}
-      <DesktopNavbar NavItem={NavItem} />
-      <MobileNavbar NavItem={NavItem} />
+      <DesktopNavbar NavItem={NavItem} userData={userData!} />
+      <MobileNavbar NavItem={NavItem} userData={userData!} />
       <ModalMenu />
     </div>
   );

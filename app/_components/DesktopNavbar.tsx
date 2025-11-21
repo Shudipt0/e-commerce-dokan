@@ -2,23 +2,27 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SearchMain from "./SearchMain";
+import UserProfile from "./UserProfile";
+
+interface User {
+  _id: string;
+  name: string;
+  phone: string;
+  email: string;
+  role: string;
+}
 
 const DesktopNavbar = ({
   NavItem,
+  userData,
 }: {
   NavItem: { label: string; link: string }[];
+  userData: User | null;
 }) => {
-  // const [user, setUser] = useState(null);
-
   // active link
   const pathName = usePathname();
 
-  // useEffect(() => {
-  //   if (userId) {
-  //     fetchUserProfile(userId).then(setUser);
-  //   }
-  // }, [userId]);
-  // console.log(user);
+  // console.log(userData);
 
   return (
     <div className="hidden container mx-auto h-16 md:flex items-center justify-between px-14">
@@ -45,34 +49,42 @@ const DesktopNavbar = ({
             </li>
           );
         })}
-        {/* {isAdmin && <li><Link href='/dashboard'>Dashboard</Link></li>} */}
-        <li>
-          <Link href="/dashboard">Dashboard</Link>
-        </li>
+        {userData?.role === "admin" && (
+          <li>
+            <Link href="/dashboard">Dashboard</Link>
+          </li>
+        )}
       </ul>
       {/* authentication */}
       <div className="flex items-center gap-8">
         {/* search input and cart */}
         <SearchMain />
 
-        <button
-          className={`${
-            pathName === "/login"
-              ? "text-black underline underline-offset-6"
-              : "text-gray-500 hover:text-black"
-          } text-[16px] font-bold`}
-        >
-          <Link href="/login">Log In</Link>
-        </button>
-        <button
-          className={`${
-            pathName === "/signup"
-              ? "text-black underline underline-offset-6"
-              : "text-gray-500 hover:text-black"
-          } text-[16px] font-bold`}
-        >
-          <Link href="/signup">Sign Up</Link>
-        </button>
+        {/* auth button */}
+        {userData ? (
+          <UserProfile userData={userData} />
+        ) : (
+          <div className="flex items-center gap-8">
+            <button
+              className={`${
+                pathName === "/login"
+                  ? "text-black underline underline-offset-6"
+                  : "text-gray-500 hover:text-black"
+              } text-[16px] font-bold`}
+            >
+              <Link href="/login">Log In</Link>
+            </button>
+            <button
+              className={`${
+                pathName === "/signup"
+                  ? "text-black underline underline-offset-6"
+                  : "text-gray-500 hover:text-black"
+              } text-[16px] font-bold`}
+            >
+              <Link href="/signup">Sign Up</Link>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

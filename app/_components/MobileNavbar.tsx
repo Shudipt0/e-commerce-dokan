@@ -7,11 +7,22 @@ import { FaTimes } from "react-icons/fa";
 import { FaBarsStaggered } from "react-icons/fa6";
 import SearchMain from "./SearchMain";
 import SearchRaise from "./SearchRaise";
+import UserProfile from "./UserProfile";
+
+interface User {
+  _id: string;
+  name: string;
+  phone: string;
+  email: string;
+  role: string;
+}
 
 const MobileNavbar = ({
   NavItem,
+  userData,
 }: {
   NavItem: { label: string; link: string }[];
+  userData: User | null;
 }) => {
   const { mobileMenuOpen, setMobileMenuOpen } = useToggleMenu();
   // const [isActive, setIsActive] = useState();
@@ -95,29 +106,34 @@ const MobileNavbar = ({
         </ul>
         {/* authentication */}
         <div className="flex flex-col gap-2 pt-2 justify-start items-start px-5 ">
-          {/* <SignedOut>
-            <button
-              className={`${
-                pathName === "/login"
-                  ? "text-black underline underline-offset-6"
-                  : "text-gray-500 hover:text-black"
-              } text-[14px] font-semibold`}
-            >
-              <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Log In</Link>
-            </button>
-            <button
-              className={`${
-                pathName === "/signup"
-                  ? "text-black underline underline-offset-6"
-                  : "text-gray-500 hover:text-black"
-              } text-[14px] font-semibold`}
-            >
-              <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
-            </button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn> */}
+          {userData ? (
+            <UserProfile userData={userData} />
+          ) : (
+            <div className="flex items-center gap-8">
+              <button
+                className={`${
+                  pathName === "/login"
+                    ? "text-black underline underline-offset-6"
+                    : "text-gray-500 hover:text-black"
+                } text-[14px] font-semibold`}
+              >
+                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                  Log In
+                </Link>
+              </button>
+              <button
+                className={`${
+                  pathName === "/signup"
+                    ? "text-black underline underline-offset-6"
+                    : "text-gray-500 hover:text-black"
+                } text-[14px] font-semibold`}
+              >
+                <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
+                  Sign Up
+                </Link>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>

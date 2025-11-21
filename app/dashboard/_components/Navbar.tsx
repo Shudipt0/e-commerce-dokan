@@ -13,7 +13,6 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { CgProfile } from "react-icons/cg";
 import { IoIosLogOut } from "react-icons/io";
 
 interface NavbarProps {
@@ -68,52 +67,41 @@ const Navbar = ({ userData }: NavbarProps) => {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent sideOffset={10}>
+          <DropdownMenuContent sideOffset={10} className="w-80 p-6 bg-gray-800">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              {/* profile dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger className="w-full flex items-center gap-2">
-                  <CgProfile />
-                  Profile
-                </DropdownMenuTrigger>
-                <DropdownMenuContent sideOffset={12} className="w-80 h-60">
-                  <DropdownMenuLabel>Profile Information</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <div className="space-y-2 capitalize ">
-                      <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2">
-                        Name:{" "}
-                        <span className="text-lg font-semibold text-foreground">
-                          {userData?.name || "Guest"}
-                        </span>
-                      </p>
-                      <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2">
-                        Phone:{" "}
-                        <span className="text-lg font-semibold text-foreground">
-                          {userData?.phone || "---"}
-                        </span>
-                      </p>
-                      <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2 lowercase">
-                        Email:{" "}
-                        <span className="text-lg font-semibold text-foreground">
-                          {userData?.email || "---"}
-                        </span>
-                      </p>
-                      <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2">
-                        Role:{" "}
-                        <span className="text-lg font-semibold text-foreground">
-                          {userData?.role || "User"}
-                        </span>
-                      </p>
-                    </div>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href={`/dashboard/users/settings`}>Settings</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="space-y-2 capitalize ">
+                <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2">
+                  Name:{" "}
+                  <span className="text-lg font-semibold text-foreground">
+                    {userData?.name || "Guest"}
+                  </span>
+                </p>
+                <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2">
+                  Phone:{" "}
+                  <span className="text-lg font-semibold text-foreground">
+                    {userData?.phone || "---"}
+                  </span>
+                </p>
+                <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2 lowercase">
+                  Email:{" "}
+                  <span className="text-lg font-semibold text-foreground">
+                    {userData?.email || "---"}
+                  </span>
+                </p>
+                <p className="text-[14px] font-extralight text-muted-foreground flex items-center gap-x-2">
+                  Role:{" "}
+                  <span className="text-lg font-semibold text-foreground">
+                    {userData?.role || "User"}
+                  </span>
+                </p>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/dashboard/users/settings`} className="w-full">
+                Settings
+              </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem variant={"destructive"}>

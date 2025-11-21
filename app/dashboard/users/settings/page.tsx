@@ -3,6 +3,7 @@ import UpdateProfile from "../../_components/UpdateProfile";
 
 const SettingProfile = async () => {
   const userData = await fetchUserProfile();
+  // console.log(userData);
   return (
     <div>
       <UpdateProfile userData={userData} />

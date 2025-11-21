@@ -1,3 +1,4 @@
+import { fetchUserProfile } from "@/lib/auth";
 import { Toaster } from "sonner";
 import BreadCrumbs from "../_components/BreadCrumbs";
 import Footer from "../_components/Footer";
@@ -8,7 +9,7 @@ export default async function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const userData = await fetchUserProfile();
+  const userData = await fetchUserProfile();
   // const cookieStore = await cookies();
   // const userId = cookieStore.get("userId")?.value;
 
@@ -17,7 +18,7 @@ export default async function MainLayout({
   // console.log(token);
   return (
     <div>
-      <Navbar />
+      <Navbar userData={userData} />
       <BreadCrumbs />
       {/* <SearchModal /> */}
       {children}
