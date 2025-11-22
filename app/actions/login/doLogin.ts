@@ -20,6 +20,10 @@ export const doLogin = async (prevState: any, formData: FormData) => {
 
     const user = await res.json();
 
+    if (!res.ok) {
+      return { error: user.message || "Login failed" };
+    }
+
     const cookieStore = await cookies();
     // Decide expiration: 30min or 7 days
     const maxAge = 60 * 60 * 24 * 7;
@@ -46,19 +50,16 @@ export const doLogin = async (prevState: any, formData: FormData) => {
     });
 
     // console.log("User:", user.data, user.accessToken);
-    return user;
+    return { success: true, user };
   } catch (err) {
     console.error("Error in doLogin:", err);
     return { error: "Login failed" };
   }
 };
 
-// "use server";
-// import { cookies } from "next/headers";
-
-// export const doLogout = async () => {
-//   const cookieStore = await cookies();
-//   cookieStore.delete("token");
-//   cookieStore.delete("userId");
-//   return { message: "Logged out successfully" };
-// };
+export const doLogout = async () => {
+  const cookieStore = await cookies();
+  cookieStore.delete("token");
+  cookieStore.delete("userId");
+  return { message: "Logged out successfully" };
+};

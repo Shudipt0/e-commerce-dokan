@@ -92,16 +92,20 @@ const MobileNavbar = ({
       >
         <ul className="w-full ">
           {NavItem.map((item, index) => (
-            <li
+            <Link
               key={index}
-              className={`w-full px-5 py-2 rounded-sm hover:bg-gray-100 ${
-                pathName === item.link ? "bg-gray-100" : ""
-              }`}
+              href={item.link}
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full"
             >
-              <Link href={item.link} onClick={() => setMobileMenuOpen(false)}>
+              <li
+                className={`w-full px-5 py-2 rounded-sm hover:bg-gray-100 ${
+                  pathName === item.link ? "bg-gray-100" : ""
+                }`}
+              >
                 {item.label}
-              </Link>
-            </li>
+              </li>
+            </Link>
           ))}
         </ul>
         {/* authentication */}

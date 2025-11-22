@@ -9,7 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToggleMenu } from "@/context/NavbarToggleContext";
 import Link from "next/link";
+import { useState } from "react";
 import { IoIosLogOut } from "react-icons/io";
+import { doLogout } from "../actions/login/doLogin";
 
 interface User {
   _id: string;
@@ -21,10 +23,22 @@ interface User {
 
 const UserProfile = ({ userData }: { userData: User | null }) => {
   const { mobileMenuOpen, setMobileMenuOpen } = useToggleMenu();
+  const [open, setOpen] = useState(false);
+  const handleSettingsClick = () => {
+    setMobileMenuOpen(false);
+    setOpen(false);
+  };
   const userIcon = userData?.name.charAt(0).toUpperCase();
+
+  async function handleLogoutClick() {
+    setMobileMenuOpen(false);
+    setOpen(false);
+    await doLogout();
+  }
+
   return (
     <div>
-      <DropdownMenu>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger>
           <div className="w-10 h-10 flex items-center justify-center text-[24px] text-white/60 font-bold bg-gray-500 rounded-full p-3 shadow ">
             {userIcon}
@@ -67,14 +81,14 @@ const UserProfile = ({ userData }: { userData: User | null }) => {
           <DropdownMenuItem className="focus:bg-gray-900 focus:text-white">
             <Link
               href={`/profile-settings`}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleSettingsClick}
               className="w-full"
             >
               Settings
             </Link>
           </DropdownMenuItem>
 
-          <DropdownMenuItem variant={"destructive"}>
+          <DropdownMenuItem variant={"destructive"} onClick={handleLogoutClick}>
             <IoIosLogOut />
             Log Out
           </DropdownMenuItem>

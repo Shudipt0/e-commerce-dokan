@@ -4,8 +4,12 @@ import { cookies } from "next/headers";
 export async function fetchUserProfile() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("userId")?.value;
-
   const token = cookieStore.get("token")?.value;
+
+  // No user logged in → redirect
+  if (!userId || !token) {
+    return null;
+  }
 
   const res = await fetch(
     `https://api-dokan-backend.onrender.com/api/v1/users/profile/${userId}`,
@@ -20,7 +24,14 @@ export async function fetchUserProfile() {
     }
   );
 
-  const data = await res.json();
+  if (!res.ok) return null;
+
+  // Safely detect HTML response to prevent crash
+  const text = await res.text();
+
+  if (text.startsWith("<")) return null;
+
+  const data = JSON.parse(text);
   // console.log(data);
   return data.user;
 }

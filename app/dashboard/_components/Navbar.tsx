@@ -1,4 +1,5 @@
 "use client";
+import { doLogout } from "@/app/actions/login/doLogin";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,8 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { IoIosLogOut } from "react-icons/io";
 
 interface NavbarProps {
@@ -28,7 +31,15 @@ interface User {
 }
 const Navbar = ({ userData }: NavbarProps) => {
   const { setTheme } = useTheme();
-  // console.log(userData);
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  // logout
+  async function handleLogoutClick() {
+    setOpen(false);
+    await doLogout();
+    router.push("/");
+  }
   return (
     <nav className="p-4 flex items-center justify-between sticky top-0 bg-background z-10">
       {/* left */}
@@ -60,7 +71,7 @@ const Navbar = ({ userData }: NavbarProps) => {
         </DropdownMenu>
 
         {/* user menu section */}
-        <DropdownMenu>
+        <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger>
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />
@@ -99,12 +110,19 @@ const Navbar = ({ userData }: NavbarProps) => {
               </div>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href={`/dashboard/users/settings`} className="w-full">
+              <Link
+                href={`/dashboard/users/settings`}
+                onClick={() => setOpen(false)}
+                className="w-full"
+              >
                 Settings
               </Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem variant={"destructive"}>
+            <DropdownMenuItem
+              variant={"destructive"}
+              onClick={handleLogoutClick}
+            >
               <IoIosLogOut />
               Log Out
             </DropdownMenuItem>

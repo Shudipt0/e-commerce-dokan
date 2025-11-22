@@ -3,11 +3,19 @@ import { doLogin } from "@/app/actions/login/doLogin";
 import sideImage from "@/public/SideImage.jpg";
 import Image from "next/legacy/image";
 import Link from "next/link";
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 
 const LogInPage = () => {
   const [state, action, ispending] = useActionState(doLogin, null);
+  const router = useRouter();
+  useEffect(() => {
+    if (state?.success) {
+      router.push("/");
+    }
+  }, [state, router]);
+
   return (
     <div className="container mx-auto px-6 pb-10 md:px-14 md:py-20 bg-white">
       <div className="w-full md:flex items-center justify-center gap-30">
@@ -33,7 +41,7 @@ const LogInPage = () => {
                   <input
                     type="text"
                     name="username"
-                    className="outline-none peer text-sm md:text-[18px] text-black/80 font-semibold duration-200 z-10"
+                    className="w-full outline-none peer text-sm md:text-[18px] text-black/80 font-semibold duration-200 z-10"
                   />
                   <span className="absolute left-0 text-sm md:text-[18px] text-gray-400 peer-focus:text-sm peer-focus:-translate-y-5 duration-200 peer-user-valid:-translate-y-5  peer-valid:text-sm peer-valid:bg-white">
                     Email or Phone
@@ -52,20 +60,21 @@ const LogInPage = () => {
                     <input
                       type="text"
                       name="password"
-                      className="outline-none peer text-sm md:text-[18px] text-black/80 font-semibold duration-200 z-10"
+                      className="w-full outline-none peer text-sm md:text-[18px] text-black/80 font-semibold duration-200 z-10"
                     />
                     <span className="absolute left-0 text-sm md:text-[18px] text-gray-400 peer-focus:text-sm peer-focus:-translate-y-5 duration-200 peer-user-valid:-translate-y-5  peer-valid:text-sm peer-valid:bg-white">
                       Password
                     </span>
                   </div>
                   <div className="w-full h-[1.5px] my-1 bg-gray-300 "></div>
-                  {/* {state.errors && (
-                    <span className="text-[12px] md:text-sm text-red-500 ">
-                      {state.errors.message}
-                    </span>
-                  )} */}
                 </div>
               </div>
+
+              {state?.error && (
+                <p className="text-[12px] md:text-sm text-red-500 font-semibold ">
+                  {state.error}
+                </p>
+              )}
 
               {/* submit button */}
               <div className="flex items-center justify-between">

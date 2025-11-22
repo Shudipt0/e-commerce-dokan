@@ -21,9 +21,6 @@ const DesktopNavbar = ({
 }) => {
   // active link
   const pathName = usePathname();
-
-  // console.log(userData);
-
   return (
     <div className="hidden container mx-auto h-16 md:flex items-center justify-between px-14">
       {/* logo */}
@@ -50,7 +47,7 @@ const DesktopNavbar = ({
           );
         })}
         {userData?.role === "admin" && (
-          <li>
+          <li className="text-blue-500 font-bold shadow bg-blue-300 rounded px-2 py-0.5">
             <Link href="/dashboard">Dashboard</Link>
           </li>
         )}
