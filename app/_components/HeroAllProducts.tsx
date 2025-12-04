@@ -14,11 +14,11 @@ const HeroAllProducts = () => {
     staleTime: 1000 * 60 * (60 * 24), // 24 hours
     refetchOnWindowFocus: false,
   });
-  // console.log(data?.products)
+  // console.log(data?.data);
   return (
     <section className="w-full flex flex-col items-center justify-center gap-10 md:gap-20 py-10 md:py-20">
       <HeroProductPagination
-        products={data?.products}
+        products={data?.data}
         totalPages={data?.totalPages ?? 1}
         currentPage={pageNumber}
         setPageNumber={setPageNumber}

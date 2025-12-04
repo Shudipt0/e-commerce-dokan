@@ -14,6 +14,7 @@ const viewPage = async (props: Props) => {
     { name: "id", item: product._id },
     { name: "title", item: product.title },
     { name: "price", item: product.price },
+    { name: "discount price", item: product.discount_price },
     { name: "category", item: product.category },
     { name: "stock", item: product.stock },
     { name: "rating", item: product.rating },
@@ -87,7 +88,7 @@ const viewPage = async (props: Props) => {
           <div className=" w-full px-4 py-2 border border-muted-foreground rounded flex gap-2 capitalize">
             <h1>Images:</h1>
             {product?.images && product.images.length > 0 ? (
-              <div>
+              <div className="flex flex-wrap gap-4 items-center">
                 {product.images.map(
                   (
                     image: { url: string; public_id: string },

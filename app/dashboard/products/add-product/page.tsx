@@ -93,6 +93,22 @@ const addProductPage = () => {
                   )}
                 </Field>
                 <Field className="col-span-3 md:col-span-1">
+                  <FieldLabel htmlFor="discount_price" className="text-[16px]">
+                    Discount Price
+                  </FieldLabel>
+                  <Input
+                    name="discount_price"
+                    id="discount_price"
+                    autoComplete="off"
+                    placeholder="discount price"
+                  />
+                  {state?.errors?.discount_price && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {state?.errors?.discount_price?.[0]}
+                    </p>
+                  )}
+                </Field>
+                <Field className="col-span-3 md:col-span-1">
                   <FieldLabel htmlFor="stock" className="text-[16px]">
                     stock
                   </FieldLabel>

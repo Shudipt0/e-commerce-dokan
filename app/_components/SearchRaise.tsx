@@ -87,10 +87,10 @@ const SearchRaise = () => {
         <ul className="absolute md:-bottom-[360px] w-full md:w-[500px] h-[360px] overflow-hidden z-20">
           {data && data?.length > 0 ? (
             data?.map((item: any) => (
-              <li key={item.id} onClick={() => setShowResults(false)}>
+              <li key={item._id} onClick={() => setShowResults(false)}>
                 <Link
                   className="block px-4 py-2 bg-white hover:bg-gray-100 rounded"
-                  href={`/shop/${item.id}`}
+                  href={`/shop/${item._id}`}
                 >
                   {item.title}
                 </Link>

@@ -88,7 +88,25 @@ const latestContent = [
   },
 ];
 
-const CardList = ({ title }: { title: string }) => {
+const CardList = async ({ title }: { title: string }) => {
+  // const orders = await fetchAllOrders();
+  // console.log(orders[0].ordered_product);
+
+  // const countMap: Record<string, number> = {};
+
+  // orders.forEach((order: any) => {
+  //   const title = order.ordered_product?.[0]?.title;
+  //   if (title) {
+  //     countMap[title] = (countMap[title] || 0) + 1;
+  //   }
+  // });
+
+  // const result = Object.entries(countMap)
+  //   .sort((a, b) => b[1] - a[1])
+  //   .map(([title]) => title);
+
+  // console.log(result);
+
   const list = title === "Popular Content" ? popularContent : latestContent;
   return (
     <div>

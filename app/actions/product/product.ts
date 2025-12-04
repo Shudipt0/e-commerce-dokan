@@ -25,8 +25,10 @@ const formSchema = z.object({
   category: z.string().min(1, "Category is required"),
   description: z.string().min(1, "Description is required"),
   price: z.number(),
+  discount_price: z.number().nullable().optional(),
   stock: z.number().nullable().optional(),
   tags: z.array(z.string().nullable()).nullable().optional(),
+  brand: z.string().nullable().optional(),
   weight: z.string().nullable().optional(),
   warrantyInformation: z.string().nullable().optional(),
   shippingInformation: z.string().nullable().optional(),
@@ -54,8 +56,10 @@ export const addProduct = async (prevState: any, formData: FormData) => {
     category: formData.get("category") as string,
     description: formData.get("description") as string,
     price: parseNumber(formData.get("price")),
+    discount_price: parseNumber(formData.get("discount_price")),
     stock: parseNumber(formData.get("stock")),
     tags: formData.getAll("tags") as string[],
+    brand: formData.get("brand") as string,
     weight: formData.get("weight") as string,
     warrantyInformation: formData.get("warrantyInformation") as string,
     shippingInformation: formData.get("shippingInformation") as string,
@@ -81,6 +85,9 @@ export const addProduct = async (prevState: any, formData: FormData) => {
   payload.append("description", validatedFields.description);
   // convert numeric values to string before appending
   payload.append("price", String(validatedFields.price));
+  if (validatedFields.discount_price != null) {
+    payload.append("discount_price", String(validatedFields.discount_price));
+  }
   if (validatedFields.stock != null) {
     payload.append("stock", String(validatedFields.stock));
   }
@@ -88,6 +95,9 @@ export const addProduct = async (prevState: any, formData: FormData) => {
     validatedFields.tags.forEach((tag) => {
       if (tag != null) payload.append("tags", tag);
     });
+  }
+  if (validatedFields.brand) {
+    payload.append("brand", validatedFields.brand);
   }
   if (validatedFields.weight) {
     payload.append("weight", validatedFields.weight);
@@ -157,8 +167,10 @@ export const updateProduct = async (prevState: any, formData: FormData) => {
     category: formData.get("category") as string,
     description: formData.get("description") as string,
     price: parseNumber(formData.get("price")),
+    discount_price: parseNumber(formData.get("discount_price")),
     stock: parseNumber(formData.get("stock")),
     tags: formData.getAll("tags") as string[],
+    brand: formData.get("brand") as string,
     weight: formData.get("weight") as string,
     warrantyInformation: formData.get("warrantyInformation") as string,
     shippingInformation: formData.get("shippingInformation") as string,
@@ -187,6 +199,7 @@ export const updateProduct = async (prevState: any, formData: FormData) => {
   payload.append("description", validatedFields.description);
   // convert numeric values to string before appending
   payload.append("price", String(validatedFields.price));
+
   if (validatedFields.stock != null) {
     payload.append("stock", String(validatedFields.stock));
   }
@@ -194,6 +207,9 @@ export const updateProduct = async (prevState: any, formData: FormData) => {
     validatedFields.tags.forEach((tag) => {
       if (tag != null) payload.append("tags", tag);
     });
+  }
+  if (validatedFields.brand) {
+    payload.append("brand", validatedFields.brand);
   }
   if (validatedFields.weight) {
     payload.append("weight", validatedFields.weight);

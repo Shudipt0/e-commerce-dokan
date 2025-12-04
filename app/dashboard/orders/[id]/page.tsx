@@ -5,10 +5,18 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+interface Product {
+  _id: string;
+  product_id: string;
+  title: string;
+  quantity: number;
+  price: number;
+}
+
 const orederDetails = async (props: Props) => {
   const { id } = await props.params;
   const order = await fetchSingleOrder(id);
-  //   console.log(order);
+  // console.log(order.ordered_product);
   return (
     <div>
       <div className="flex justify-between items-center mx-5 mt-3">
@@ -60,19 +68,56 @@ const orederDetails = async (props: Props) => {
           </span>
         </p>
         <span className="w-full h-[2px] bg-muted-foreground rounded"></span>
-        <p className="text-[18px] font-semibold flex items-end gap-3">
-          Product Details:{" "}
-          <span className="text-[16px] font-stretch-50% capitalize text-muted-foreground">
-            {order?.ordered_product
-              .map((product: string) => product)
-              .join(" | ")}
-          </span>
-        </p>
+        <div className="">
+          <p className="text-[18px] font-semibold flex items-end gap-3">
+            Product Details:{" "}
+          </p>
+          <div className="flex flex-wrap gap-5 ml-10 text-[16px] font-stretch-50% capitalize">
+            {order?.ordered_product?.map((product: Product) => (
+              <ul
+                key={product._id}
+                className="w-[300px] border border-amber-200 p-2 rounded"
+              >
+                <li className="font-semibold text-muted-foreground">
+                  Product Id:{" "}
+                  <span className="text-blue-500">
+                    {product.product_id || "N/A"}
+                  </span>
+                </li>
+                <li className="font-semibold text-muted-foreground">
+                  Title:{" "}
+                  <span className="text-blue-500">
+                    {product.title || "N/A"}
+                  </span>
+                </li>
+                <li className="font-semibold text-muted-foreground">
+                  Quantity:{" "}
+                  <span className="text-blue-500">
+                    {product.quantity || "N/A"}
+                  </span>
+                </li>
+                <li className="font-semibold text-muted-foreground">
+                  Price:{" "}
+                  <span className="text-blue-500">
+                    {product.price || "N/A"}
+                  </span>
+                </li>
+              </ul>
+            ))}
+          </div>
+        </div>
         <span className="w-full h-[2px] bg-muted-foreground rounded"></span>
         <p className="text-[18px] font-semibold flex items-end gap-3">
           Status:{" "}
           <span className="text-[16px] font-stretch-50% capitalize text-muted-foreground">
             {order?.status}
+          </span>
+        </p>
+        <span className="w-full h-[2px] bg-muted-foreground rounded"></span>
+        <p className="text-[18px] font-semibold flex items-end gap-3">
+          Coupon:{" "}
+          <span className="text-[16px] font-stretch-50% capitalize text-muted-foreground">
+            {order?.coupon || "N/A"}
           </span>
         </p>
         <span className="w-full h-[2px] bg-muted-foreground rounded"></span>

@@ -32,7 +32,7 @@ const wishlistPage = () => {
 
           <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 justify-items-center ">
             {items?.map((item: any) => (
-              <WishlistCart key={item.id} item={item} />
+              <WishlistCart key={item._id} item={item} />
             ))}
           </div>
         </>

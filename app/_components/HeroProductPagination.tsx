@@ -1,6 +1,5 @@
-import React from "react";
-import HeroHeadLine from "./HeroHeadLine";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
+import HeroHeadLine from "./HeroHeadLine";
 import ProductCard from "./ProductCard";
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
   setPageNumber: (page: number) => void;
 }
 interface Products {
-  id: number;
+  _id: string;
 }
 
 const HeroProductPagination = ({
@@ -26,7 +25,7 @@ const HeroProductPagination = ({
       {/* product pagination */}
       <div className=" w-full grid grid-cols-2 md:grid-cols-4 justify-items-center gap-2 md:gap-22 ">
         {products?.map((item: Products) => (
-          <ProductCard key={item.id} item={item} />
+          <ProductCard key={item._id} item={item} />
         ))}
       </div>
 

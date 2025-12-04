@@ -6,7 +6,7 @@ import { Range } from "react-range";
 import ProductCard from "./ProductCard";
 
 interface Product {
-  id: string;
+  _id: string;
   title: string;
   brand: string;
   rating: number;
@@ -179,7 +179,7 @@ const CategoryProducts = ({ slug }: { slug?: string }) => {
       <div className=" md:w-full grid grid-cols-2 md:grid-cols-4 justify-items-end gap-3 py-10 md:py-0">
         {filteredProducts.length ? (
           filteredProducts.map((item: Product) => (
-            <ProductCard key={item.id} item={item} />
+            <ProductCard key={item._id} item={item} />
           ))
         ) : (
           <p>No products match selected filters.</p>

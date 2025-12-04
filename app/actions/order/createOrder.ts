@@ -4,6 +4,13 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import z from "zod";
 
+const orderedProductInfoSchema = z.object({
+  product_id: z.string(),
+  title: z.string(),
+  quantity: z.number(),
+  price: z.number(),
+});
+
 const formSchema = z.object({
   name: z.string().min(3).max(10),
   company_name: z.string().nullable().optional(),
@@ -12,7 +19,7 @@ const formSchema = z.object({
   city_town: z.string().min(5).max(20),
   phone: z.string().min(11).max(11),
   email: z.string().email(),
-  ordered_product: z.array(z.string()),
+  ordered_product: z.array(orderedProductInfoSchema),
   coupon: z.string().nullable().optional(),
   status: z.string(),
 });
@@ -20,6 +27,20 @@ const formSchema = z.object({
 // create Order
 export const createOrder = async (prevState: any, formData: FormData) => {
   // validation
+  // STEP 1 — Parse ordered_product JSON
+  const orderedProductsRaw = formData.getAll("ordered_product");
+
+  const orderedProducts = orderedProductsRaw.map((x) => {
+    const item = JSON.parse(x as string);
+
+    return {
+      product_id: String(item.product_id), // <-- convert to string
+      title: item.title,
+      quantity: Number(item.quantity),
+      price: Number(item.price),
+    };
+  });
+
   const validatedFields = formSchema.safeParse({
     name: formData.get("name") as string,
     company_name: formData.get("company_name") as string,
@@ -28,7 +49,7 @@ export const createOrder = async (prevState: any, formData: FormData) => {
     city_town: formData.get("city_town") as string,
     phone: formData.get("phone") as string,
     email: formData.get("email") as string,
-    ordered_product: formData.getAll("ordered_product") as string[],
+    ordered_product: orderedProducts,
     coupon: formData.get("coupon") as string,
     status: formData.get("status") as string,
   });

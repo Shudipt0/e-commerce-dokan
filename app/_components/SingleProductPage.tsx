@@ -21,7 +21,7 @@ const SingleProductPage = async ({ id }: { id: string }) => {
     return <div>Product not found</div>;
   }
   const data = await fetchProduct(id);
-  // console.log(data)
+  // console.log(data?.product);
   return (
     <div className="container mx-auto px-2 md:px-14 pb-10 md:py-20 bg-white">
       <SingleProduct data={data} />

@@ -146,10 +146,10 @@ const checkoutPage = () => {
         <div className="w-full md:w-[550px] flex flex-col gap-6 ">
           {/* cart item */}
           {items?.map((item: any) => (
-            <div key={item.id} className=" flex items-center justify-between">
+            <div key={item._id} className=" flex items-center justify-between">
               <div className="flex items-center gap-1 md:gap-3">
                 <Image
-                  src={item?.images?.[0]}
+                  src={item?.images?.[0]?.url}
                   alt={`image od ${item.title}`}
                   width={70}
                   height={70}
@@ -161,11 +161,17 @@ const checkoutPage = () => {
               <h3 className="text-[12px] md:text-sm text-black/80">
                 ${item?.price * item?.quantity}
               </h3>
-              <textarea
-                name="ordered_product"
+
+              <input
+                type="hidden"
                 id="ordered_product"
-                defaultValue={item.id + "," + item.title + "," + item.quantity}
-                hidden
+                name="ordered_product"
+                defaultValue={JSON.stringify({
+                  product_id: item.id,
+                  title: item.title,
+                  quantity: item.quantity,
+                  price: item.price,
+                })}
               />
             </div>
           ))}

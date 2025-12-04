@@ -19,7 +19,7 @@ const HeroSelling = () => {
         {/* product card */}
         <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-28 ">
           {data?.map((item: any) => (
-            <ProductCard key={item.id} item={item} />
+            <ProductCard key={item._id} item={item} />
           ))}
         </div>
         <button className="w-16 h-6 md:w-[160px] md:h-14 absolute top-9 md:top-12 right-0 text-white text-[10px] md:text-[16px] font-semibold bg-[#DB4444] rounded flex items-center justify-center ">

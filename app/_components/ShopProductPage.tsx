@@ -7,7 +7,7 @@ import { fetchAllProducts } from "../dataFetch/Api";
 import ProductCard from "./ProductCard";
 
 type Products = {
-  id: string | number;
+  _id: string | number;
   // add other product fields as needed
 };
 
@@ -26,7 +26,7 @@ const ShopProductPage = () => {
   } = useInfiniteQuery({
     queryKey: ["products"],
     queryFn: fetchAllProducts,
-    initialPageParam: 0,
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
   // console.log(data);
@@ -43,13 +43,13 @@ const ShopProductPage = () => {
       <div className="w-full flex flex-col justify-center gap-20">
         {data?.pages?.map(
           (group, index) =>
-            group?.products?.length > 0 && (
+            group?.data?.length > 0 && (
               <div
                 key={index}
                 className="w-full grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 justify-items-center space-y-6"
               >
-                {group?.products?.map((item: Products) => (
-                  <ProductCard key={item.id} item={item} />
+                {group?.data?.map((item: Products) => (
+                  <ProductCard key={item._id} item={item} />
                 ))}
               </div>
             )

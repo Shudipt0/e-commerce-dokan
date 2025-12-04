@@ -28,6 +28,15 @@ import { useActionState, useState } from "react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
+
+type Product = {
+  _id: string;
+  product_id: string;
+  title: string;
+  quantity: number;
+  price: number;
+};
+
 export type Orders = {
   _id: string;
   name: string;
@@ -35,7 +44,7 @@ export type Orders = {
   city_town: string;
   phone: string;
   email: string;
-  ordered_product: string[];
+  ordered_product: Product[];
   status: string;
   created_at: string;
 };
@@ -80,10 +89,14 @@ export const columns: ColumnDef<Orders>[] = [
     accessorKey: "ordered_product",
     header: "Ordered Product",
     cell: ({ row }) => {
-      const products = row.getValue("ordered_product") as string[];
+      const products = row.getValue("ordered_product") as Product[];
 
       return (
-        <div className="capitalize">{products.slice(0, 3).join(", ")}</div>
+        <div className="capitalize">
+          {products.map((p, index) => (
+            <p key={index}>{p.title}</p>
+          ))}
+        </div>
       );
     },
   },

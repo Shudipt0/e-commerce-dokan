@@ -1,9 +1,7 @@
-import React from "react";
 import HeroHeadLine from "./HeroHeadLine";
-import NewArrivalItemOne from "./NewArrivalItemOne";
-import NewArrivalTwo from "./NewArrivalTwo";
-import NewArrivalItemTree from "./NewArrivalItemTree";
 import NewArrivalFour from "./NewArrivalFour";
+import NewArrivalItemOne from "./NewArrivalItemOne";
+import NewArrivalItemTree from "./NewArrivalItemTree";
 
 const HeroNewArrival = () => {
   return (
@@ -16,7 +14,7 @@ const HeroNewArrival = () => {
             <NewArrivalItemOne />
           </div>
           <div className="row-span-1 col-span-2 ">
-            <NewArrivalTwo />
+            {/* <NewArrivalTwo /> */}
           </div>
           <div className="row-span-1 col-span-1">
             <NewArrivalItemTree />
