@@ -8,15 +8,12 @@ export const doLogin = async (prevState: any, formData: FormData) => {
   //   console.log(username, password);
   // const baseUrl = "http://localhost:3000";
   try {
-    const res = await fetch(
-      `https://api-dokan-backend.onrender.com/api/v1/users/login`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-        credentials: "include",
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+      credentials: "include",
+    });
 
     const user = await res.json();
 

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   // baseURL
-  baseURL: "https://api-dokan-backend.onrender.com/api/v1/products",
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/products`,
 });
 
 // get all product by pagination

@@ -27,15 +27,12 @@ export const createContact = async (prevState: any, formData: FormData) => {
 
   const userContact = validationFields.data;
 
-  const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/contact`,
-    {
-      method: "POST",
-      body: JSON.stringify(userContact),
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/contact`, {
+    method: "POST",
+    body: JSON.stringify(userContact),
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
 
   const contact = await res.json();
   if (!res.ok) {

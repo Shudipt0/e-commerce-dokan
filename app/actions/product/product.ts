@@ -130,15 +130,12 @@ export const addProduct = async (prevState: any, formData: FormData) => {
   }
 
   try {
-    const res = await fetch(
-      `https://api-dokan-backend.onrender.com/api/v1/products`,
-      {
-        method: "POST",
-        body: payload,
-        // headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/products`, {
+      method: "POST",
+      body: payload,
+      // headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
 
     const product = await res.json();
     if (!res.ok) {
@@ -242,7 +239,7 @@ export const updateProduct = async (prevState: any, formData: FormData) => {
   }
 
   const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/products/${id}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/products/${id}`,
     {
       method: "PUT",
       body: payload,
@@ -264,7 +261,7 @@ export const updateProduct = async (prevState: any, formData: FormData) => {
 // delete product action
 export const deleteProduct = async (id: string) => {
   const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/products/${id}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/products/${id}`,
     {
       method: "DELETE",
       credentials: "include",

@@ -14,7 +14,7 @@ export const changeProfile = async (prevState: any, formData: FormData) => {
   const userId = cookieStore.get("userId")?.value;
 
   const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/users/profile/${userId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/profile/${userId}`,
     {
       method: "PUT",
       body: JSON.stringify({ name, phone, email }),

@@ -16,7 +16,7 @@ export const changeRole = async (prevState: any, formData: FormData) => {
   // console.log(adminToken);
 
   const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/users/${adminId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/${adminId}`,
     {
       method: "PUT",
       body: JSON.stringify({ id, role }),

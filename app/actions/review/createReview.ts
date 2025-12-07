@@ -36,7 +36,7 @@ export const createReview = async (prevState: any, formData: FormData) => {
   // console.log(userReview);
 
   const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/products/${id}/reviews`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/products/${id}/reviews`,
     {
       method: "POST",
       body: JSON.stringify(userReview),

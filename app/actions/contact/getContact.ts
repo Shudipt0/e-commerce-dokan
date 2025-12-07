@@ -4,17 +4,14 @@ import { cookies } from "next/headers";
 export async function fetchAllContact() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-  const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/contact`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/contact`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const data = await res.json();
   //   console.log(data);
@@ -25,17 +22,14 @@ export async function fetchAllContact() {
 export async function fetchSingleContact(id: string) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-  const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/contact/${id}`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/contact/${id}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const data = await res.json();
   //   console.log(data);

@@ -64,15 +64,12 @@ export const createOrder = async (prevState: any, formData: FormData) => {
 
   const orderData = validatedFields.data;
 
-  const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/orders`,
-    {
-      method: "POST",
-      body: JSON.stringify(orderData),
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/orders`, {
+    method: "POST",
+    body: JSON.stringify(orderData),
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
 
   const order = await res.json();
   if (!res.ok) {
@@ -90,18 +87,15 @@ export const changeOrderStatus = async (prevState: any, formData: FormData) => {
   const cookieStore = await cookies();
   const adminToken = cookieStore.get("token")?.value;
 
-  const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/orders/${id}`,
-    {
-      method: "PUT",
-      body: JSON.stringify({ id, status }),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${adminToken}`,
-      },
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/orders/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({ id, status }),
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${adminToken}`,
+    },
+  });
 
   const order = await res.json();
   revalidatePath("/dashboard/orders");
@@ -113,17 +107,14 @@ export const changeOrderStatus = async (prevState: any, formData: FormData) => {
 export const deleteOrder = async (id: string) => {
   const cookieStore = await cookies();
   const adminToken = cookieStore.get("token")?.value;
-  const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/orders/${id}`,
-    {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${adminToken}`,
-      },
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/orders/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${adminToken}`,
+    },
+  });
   const orderItem = await res.json();
   if (!res.ok) {
     console.error("API Error:", orderItem);

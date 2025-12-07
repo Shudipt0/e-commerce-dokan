@@ -30,7 +30,7 @@ export const createUser = async (prevState: any, formData: FormData) => {
   const userData = validationFields.data;
 
   const res = await fetch(
-    `https://api-dokan-backend.onrender.com/api/v1/users/register`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/register`,
     {
       method: "POST",
       body: JSON.stringify(userData),
