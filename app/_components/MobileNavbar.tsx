@@ -86,7 +86,7 @@ const MobileNavbar = ({
 
       {/* mobile menu items */}
       <div
-        className={`fixed left-0 top-[106px] bg-white z-50 w-[50%] h-screen p-8 shadow-md md:hidden transform transition-all ease-in-out duration-300 ${
+        className={`fixed left-0 top-[106px] bg-white z-50 w-[50%] h-screen px-2 pt-5 shadow-md md:hidden transform transition-all ease-in-out duration-300 ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } `}
       >
@@ -99,7 +99,7 @@ const MobileNavbar = ({
               className="w-full"
             >
               <li
-                className={`w-full px-5 py-2 rounded-sm hover:bg-gray-100 ${
+                className={`w-full px-4 py-2 rounded-sm hover:bg-gray-100 ${
                   pathName === item.link ? "bg-gray-100" : ""
                 }`}
               >
@@ -109,11 +109,11 @@ const MobileNavbar = ({
           ))}
         </ul>
         {/* authentication */}
-        <div className="flex flex-col gap-2 pt-2 justify-start items-start px-5 ">
+        <div className="flex flex-col gap-2 pt-2 justify-start items-start px-4 border-t mt-4">
           {userData ? (
             <UserProfile userData={userData} />
           ) : (
-            <div className="flex items-center gap-8">
+            <div className="flex flex-col items-start gap-3">
               <button
                 className={`${
                   pathName === "/login"
